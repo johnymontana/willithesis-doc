@@ -1,0 +1,27 @@
+% !TeX encoding=utf8
+% !TeX spellcheck = en-US
+
+\chapter{Introduction}
+% remove text and replace it with your real introduction
+
+Social networks are everywhere. Facebook, Twitter, LinkedIn, etc...
+
+\section{Online Social Collaboration Networks}
+Social networks based on our activity rather than who we know. Consider GitHub: Github is a software collaboration web application based on the git version control system. Using GitHub software developers can collaborate on projects, share software projects and follow what other developers are working on. GitHub can be thought of as a social collaboration network, a type of network that has both collaboration and social interactions between users. 
+
+
+
+\section{This project}
+The goal of this thesis is to explore the link prediction problem, as applied to online social collaboration networks. Much of the previous literature in this area focuses on homogenous (single relationship) undirected social networks. We extend this research to focus on heterogenous (multiple relationship type) directed social collaboration networks, specifically the GitHub network. We duplicate the work done previously in this area and develop a novel approach to link prediction.
+
+The remainder of this paper is outlined as follows:
+
+\begin{description}
+\item[Chapter 2 - Previous Work ] A review of the literature in this field
+\item[Chapter 3 - Methods]  An examination of the data used for this project as well as an in-depth explanation of the algorithms used for link prediction, in the context of the graph traversal pattern, which is also explained in this chapter. A novel approach for link prediction is proposed, a combined similarity and network structure method. Implementation details involving graph data modeling and graph databases are discussed.
+\item[Chapter 4 - Evaluation] This new recommender system is evaluated relative to similarity based methods and network structure methods.
+\item[Chapter 5 - Summary] Areas of further research are discussed.
+\end{description}
+
+
+Figure \ref{githubdatamodel} shows the GitHub network modeled as a property graph \cite{Rodriguez}. This project is concerned with only the \textit{FOLLOWS} relationship: GitHub users can follow other users to express interest in another user and receive updates about that user's actions in the GitHub system. A user recommendation system is implemented which generates recommendations of other users to follow on GitHub. Since user recommendations are a prediction of future action, this can be thought of as a link prediction problem: given a vertex in the graph, can we predict which edges will be added in the future? Specifically, we are predicting \textit{FOLLOWS} edges for specific users. A user-user collaborative filtering algorithm is implemented using the graph traversal pattern \cite{Rodriguez} and evaluated using a leave-one-out method. 
