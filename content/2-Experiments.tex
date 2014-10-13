@@ -126,14 +126,37 @@ J(J,N) = \frac{|\{Item2\}|}{|\{Item2, Item4, Item5\}|}
 J(J,G) = \frac{1}{3}
 \end{equation}
 
-We can now predict the edge $J\ leftarrow N$ with weight $1/3$. 
-
-\footnote{If we were interested in predicting User-Item links, we could allow each similar user to \textit{vote} for other Items in which J might have an interest. We now take the top $k$ nodes that have the highest Jaccard score and allow each to vote for new outgoing links to form from $J$. Here we will select $L$ and recommend any outgoing links from $L$ as destination nodes for predicted links emminating from $J$. However, we are only concerned here with User-User edges.}
+We can now predict the edge $J \leftarrow N$ with weight $1/3$. \footnote{If we were interested in predicting User-Item links, we could allow each similar user to \textit{vote} for other Items in which J might have an interest. We now take the top $k$ nodes that have the highest Jaccard score and allow each to vote for new outgoing links to form from $J$. Here we will select $L$ and recommend any outgoing links from $L$ as destination nodes for predicted links emminating from $J$. However, we are only concerned here with User-User edges.}
 
 As you can see, the collaborative filtering link prediction process for a given user $x$ involves finding other users most similar to user $x$, then finding items those similar users are most interested in. In this sense collaborative filtering can be thought of as very similar to k-nearest neighbors, where the distance calculation is based on some similarity metric.
 
 \subsection{Triadic Closeness}
 Graph theory proposes the concept of triadic closure, the hypothesis that the creation of an edge between u and v is related to the degree of overlapping neighbors in u and v's respective networks. (CITATION NEEDED and expand on this - see one of the network analysis books I have) The concept of Triadic Closeness is an application of the theory of triadic closure, specifically taking into account the directed nature of social networks. For a given fully observed network, Triadic Closeness can be thought of as the ratio of the number of closed triads to the number of potentially closed triads. \cite{Schall2014}. A triad consists of three nodes $u, z, v$ where edges (ignoring direction) $u,z$ and $z,v$ exist. Edges between $u$ and $v$ may exist, however the concept of triadic closure posits that an implicit connection exists between $u$ and $v$.
+
+\begin{algorithm}
+\caption{Triadic Closeness link prediction algorithm}\label{algo_tc}
+\begin{algorithmic}[1]
+\State $input: G(U, E), x, N$ \Comment{explain inputs here}
+\State $usersSample \gets getRandomUsers(U,x)$
+\State $results \gets \{\}$
+\For {$each user in usersSample$}
+	\State $validationEdge \gets getRandomEdge(G, user)$
+	\State $removeEdge(validationEdge,G)$
+	\State $triads \gets getTriads(user, G)$
+	\State $pred \gets \{\}$
+	\For {$u, v in triads$}
+		\State $tc \gets calcTC(u,v,G)$
+		\State $pred \gets pred + \{tc, u, v\}$
+	\EndFor
+	\State $predictions \gets topXSortedByTC(pred, N)$
+	\State $hit \gets is validationEdge in predictions?$
+	\State $addEdge(validationEdge, G)$
+	\State $results \gets results + \{hit, pred, u, v, validation_edge\}$
+\EndFor
+\State \Return results
+\end{algorithmic}
+\end{algorithm}
+
 
 \begin{figure}[H]  \centering  \includegraphics[width=0.4\textwidth]{images/thesis_triad_example.png}  \caption[closed triad patterns]{A triad is considered to be closed if an edge exists between u and v.}  \label{thesis_closed_triads}\end{figure}
 
@@ -223,9 +246,9 @@ Having collected these triad pattern frequencies, we can now generate recommenda
 
 The first step is identify all open triads of the form u,z,v where J is u and no link between u,z exists. Those triads are:
 
-J,F,G
-J,I,N
-J,P,Q
+(J,F,G),\\
+(J,I,N), \\ 
+(J,P,Q)
 
 (INSERT GRAPH HERE OF THE THREE TRIADS AND THEIR PATTERNS)
 
@@ -346,36 +369,47 @@ Each of the two methods described above do not fully capture the information nee
 
 We next examine how these two methods can be combined to improve link prediction. \cite{Lu2010} identifies such hybrid methods as a way to improve accuracy of link prediction beyond what any one algorithm might be able to obtain.
 
+While such an ensemble method could be defined as a simple weighted average with fixed weights as described in \cite{Candillier}, we instead propose an adaptive weighting mechanism to take into account the information available for each component of the ensemble metric. 
 
-\begin{equation}AEM{uv} = \sum_{z\in \Gamma(u)\cap \Gamma(v)} w^{P}(u, v, z) \times w(z)  
+Consider: 
+\begin{equation}AEM_{u,v} = \sum_{c \in components} c(u, v) \times w_c(u,v)  
 \end{equation}
 
+Using Jaccard and Triadic Closeness, this becomes:
 
+\begin{equation}
+AEM_{u,v} = J(u,v) \times w_J(u,v) + TC(u,v) \times w_{TC}(u,v)
+\end{equation}
+
+Both Jaccard and Triadic Closeness metrics are in the range \{0,1\} so we do not need to normalize.  $J(u,v)$ is described above in Equation XX and $TC(u,v)$ in Equation XX, but what values to assign the weights $w_J$ and $w_{TC}$? Rather than assigning equal weights, the weights should be assigned according to the proportion of our confidence in each metric. Since we are dealing with a multi-modal network, each metric is calculated using a certain relationship type. Here Jaccard is calculated using User-Item \textit{:LIKES} relationships, while Triadic Closeness is calculated using only User-User \textit{:FOLLOWS} relationships. For a given user, $u$ we can use the proportion of total out-edges of each relationship type as the weight for the corresponding metric.
+
+For example:
+
+\begin{equation}
+w_J(u,v) = \frac{count(u-\{:LIKES\}->)}{count(u-\{*\}->)}
+\end{equation}
+
+\begin{equation}
+w_{TC} = \frac{count(u-\{:FOLLOWS\}->)}{count(u-\{*\}->)}
+\end{equation}
+
+Where $count(u-\{:LIKES\}->)$ is the number of outgoing \textit{:LIKES} edges for User $u$ and $count(u-\{*\}->)$ is the total number of outgoing edges (both \textit{:LIKES} and \textit{:FOLLOWS}).  
+
+We can think of each outgoing edge as a rating or vote from that user, expressing their interest. If for a given user we observe 10 \textit{:FOLLOWS} edges and only 1 \textit{:LIKES} edge, we have greater confidence in the accuracy of the Triadic Closeness metric since we have more information about User $u$'s preferences. 
 
 \section{Implementation}
-
+We implement a system capable of generating recommendations using each of the three methods described above (Jaccard similarity, Triadic Closeness, and an adaptive ensemble method). This system is written in Java and makes use of the Neo4j graph database.
 
 \subsection{Graph Data Model}
-The labeled property graph
+We model the data as a graph, $G = (V, E)$ 
 
 \subsection{Graph Traversal Pattern}
-What is the graph traversal pattern? The graph traversal pattern allows us to design algorithms where the answer to our question is a traversal through the graph. 
+The graph traversal pattern allows us to design algorithms where the answer to our question is a traversal through the graph. 
 
 \subsection{Graph Database And Querying Traversals}
 Why using a graph database makes sense.
 Performance benefits of using graph database.
 Compare to how this would be modeled in a RDBMS or a document DB.
-\subsection{}
-\begin{figure}[ht]
-\vskip 0.2in
-\begin{center}
-\centerline{\includegraphics[width=\columnwidth]{images/jaccard.png}}
-\caption{Example of Neo4j Cypher query language used to calculate Jaccard metric for pairs of users.}
-\label{icml-historical}
-\end{center}
-\vskip -0.2in
-\end{figure} 
-The system is developed using Java and makes use of the Neo4j graph database. The Cypher query language is used to query the graph database and for defining graph traversals for processing. The program is configurable and implements k-fold cross validation.
 
 \subsection{Triad detection}
 
@@ -388,73 +422,64 @@ The system is developed using Java and makes use of the Neo4j graph database. Th
 %}{}
 
 
-Triad detection involves scanning the entire graph to identify triads in the network, both open and closed. This process is 
-\subsection{Steps}
-The following describes implementation of the system at a high level. For each validation fold:
+Triad detection involves scanning the entire graph to identify triads in the network, both open and closed.
 
-\begin{itemize}
-\item Select $p$ users at random
-\item For each user $u$ in $p$:
-	\begin{itemize}
-	\item Remove one $FOLLOWS$ edge $f$ for this user at random
-	\item Find $k$ nearest neighbors using Jaccard index (ensure removed edge is not used for this calculation)
-	\item Calculate $n$ followed users with greatest overlap (the most commonly followed users among the $k$ nearest neighbors)
-	\item Return set of $n$ users, these are the recommended users
-	\item Is $f$ in $n$? If yes, this run is counted as a valid prediction.
-	\end{itemize}
-\item Report summary accuracy metrics for this fold
-\end{itemize}
+%\subsection{Steps}
+%The following describes implementation of the system at a high level. For each validation fold:
+%
+%\begin{itemize}
+%\item Select $p$ users at random
+%\item For each user $u$ in $p$:
+%	\begin{itemize}
+%	\item Remove one $FOLLOWS$ edge $f$ for this user at random
+%	\item Find $k$ nearest neighbors using Jaccard index (ensure removed edge is not used for this calculation)
+%	\item Calculate $n$ followed users with greatest overlap (the most commonly followed users among the $k$ nearest neighbors)
+%	\item Return set of $n$ users, these are the recommended users
+%	\item Is $f$ in $n$? If yes, this run is counted as a valid prediction.
+%	\end{itemize}
+%\item Report summary accuracy metrics for this fold
+%\end{itemize}
 
 
 %caption{Collaborative Filtering Recommendation}
 %\label{alg:cf}
 
-\begin{algorithm}
-\caption{Link prediction algorithm}\label{algo_tc}
-\begin{algorithmic}[1]
-\State $input: G(U, E), x, N$ \Comment{explain inputs here}
-\State $usersSample \gets getRandomUsers(U,x)$
-\State $results \gets \{\}$
-\For {$each user in usersSample$}
-	\State $validationEdge \gets getRandomEdge(G, user)$
-	\State $removeEdge(validationEdge,G)$
-	\State $triads \gets getTriads(user, G)$
-	\State $pred \gets \{\}$
-	\For {$u, v in triads$}
-		\State $tc \gets calcTC(u,v,G)$
-		\State $pred \gets pred + \{tc, u, v\}$
-	\EndFor
-	\State $predictions \gets topXSortedByTC(pred, N)$
-	\State $hit \gets is validationEdge in predictions?$
-	\State $addEdge(validationEdge, G)$
-	\State $results \gets results + \{hit, pred, u, v, validation_edge\}$
-\EndFor
-\State \Return results
-\end{algorithmic}
-\end{algorithm}
-
 \section{Data}
 
-\begin{figure}[H]  \centering  \includegraphics[width=0.75\textwidth]{images/githubdatamodel.png}  \caption[GitHub graph data model]{GitHub data model as a labeled property graph.}  \label{fig:figures:1}\end{figure}
+
+\begin{figure}[H]  \centering  \includegraphics[width=0.75\textwidth]{images/githubdatamodel.png}  \caption[GitHub graph data model]{GitHub data model as a labeled property graph.}  \label{github_data_model}\end{figure}
+
+GitHub \footnote{\url{http://github.com}} is an online social collaboration network built around the Git version control system. GitHub allows software developers to share and collaborate on software projects. Many open-source software projects are hosted on GitHub and use GitHub as their primary development and distribution platform. GitHub also has a social component: users are able to \textit{follow} other users to receive updates about user activity. This combination of social and collaboration components make GitHub an excellent example of a multi-modal complex network. 
 
 
-Data was collected from GitHub Archive\cite{githubarchive}, a service that maintains an archive of all public events emitted by the GitHub API\cite{github:Online}. These include events such as creation of new repositories, pushes to repositories, repository stars, and user follows. Data was collected for the time period April 1st, 2013 - April 1st, 2014. For the purposes of this project, only \textit{FOLLOWS} events were considered. This resulted in a total of 539893 users and 919489 follows. In terms of a graph, that equates to 539893 nodes and 919489 vertices between nodes.
+\begin{figure}[ht]
+\vskip 0.2in
+\begin{center}
+\centerline{\includegraphics[width=0.75\columnwidth]{images/neo_screenshot.png}}
+\caption{GitHub data model as a property graph. Screenshot from Neo4j graph database interface.}
+\label{screenshot-data}
+\end{center}
+\vskip -0.2in
+\end{figure} 
+
+
+The GitHub network is multi-modal in that there are multiple nodes types (primarily Users and Repositories, or software projects) and multiple edge types (User-User follows, User-Repository Stars, etc). Figure \ref{github_data_model} shows a portion of the GitHub data modeled as a graph. This data model is quite rich, however for the purposes of this paper we will only concern ourselves with User-User \textit{:FOLLOWS} and User-Repository \textit{:STARS} edges. That simplifies the data model to that shown in Figure \ref{github_simplified_data_model}.
+
 
 \begin{figure}[ht]
 \vskip 0.2in
 \begin{center}
 \centerline{\includegraphics[width=0.3\columnwidth]{images/user_user.png}}
 \caption[User-User data model]{The GitHub follow graph is a simple graph with User nodes and Follows edges.}
-\label{fig:figures:4}
+\label{github_simplified_data_model}
 \end{center}
 \vskip -0.2in
 \end{figure} 
 
-A graph data model is used to represent this data as the data is highly connected: it is describing entities (users and repositories) and their interactions (stars, follows, pushes, etc). Figure \ref{screenshot-data} shows an example of a subgraph of user and repository nodes and the interactions among those entities, modeled as a graph.
-
 \subsection{Github Archive}
-\label{sec:example:code}
+Data was collected from GitHub Archive\cite{githubarchive}, a service that maintains an archive of all public events emitted by the GitHub API\cite{github:Online}. These include events such as creation of new repositories, pushes to repositories, repository stars, and user follows. Data was collected for the time period April 1st, 2013 - April 1st, 2014. For the purposes of this project, only \textit{FOLLOWS} events were considered. This resulted in a total of 539893 users and 919489 follows. In terms of a graph, that equates to 539893 nodes and 919489 vertices between nodes.
 
+A graph data model is used to represent this data as the data is highly connected: it is describing entities (users and repositories) and their interactions (stars, follows, pushes, etc). Figure \ref{screenshot-data} shows an example of a subgraph of user and repository nodes and the interactions among those entities, modeled as a graph.
 
 \subsubsection{FollowEvent}
 \begin{lstlisting}[style=lstStyleCpp, caption={LaTeX Typesetting By Example}, label=lstLaTeXExample]{
@@ -550,37 +575,27 @@ This allows for the dataset to be anonymized using only arbitrary user ids and s
 
 This edgelist file is then used to populate a Neo4j graph database instance, using only the minimal information necessary to implement our link prediction system. 
 
-\begin{table}[t]
-\caption{Dataset descriptive statistics}
-\label{results}
-\vskip 0.15in
-\begin{center}
-\begin{small}
-\begin{sc}
-\begin{tabular}{rrccr}
+\begin{table}[ht]
+\centering
+\small\renewcommand{\arraystretch}{1.4}  
+\rowcolors{1}{tablerowcolor}{tablebodycolor}
+%
+\captionabove[GitHub network descriptive statistics]{Here we see the most "central" Users per their PageRank rankings. This is based on the graph created by user-user follows edges.}
+\label{follow_pagerank_table}
+\begin{tabularx}{0.7\textwidth}{lXXX}
+\hline
+\rowcolor{tableheadcolor}
+ & Count \\
 \hline
 Nodes (users) & 539893  \\
 Edges (:FOLLOWS relationships) & 919489 \\
 Mean degree & 3.4 \\
 Standard deviation of degree & 30.3 \\
 \hline
-\end{tabular}
-\end{sc}
-\end{small}
-\end{center}
-\vskip -0.1in
+\hline
+\end{tabularx}
 \end{table}
 
-
-\begin{figure}[ht]
-\vskip 0.2in
-\begin{center}
-\centerline{\includegraphics[width=\columnwidth]{images/neo_screenshot.png}}
-\caption{GitHub data model as a property graph. Screenshot from Neo4j graph database interface.}
-\label{screenshot-data}
-\end{center}
-\vskip -0.2in
-\end{figure} 
 
 \subsection{Data Analysis}
 
@@ -617,7 +632,6 @@ mdo & 70.40 \\
 LeaVerou & 66.92 \\
 tekkub & 62.24 \\
 nf & 60.93 \\
-
 \hline
 \end{tabularx}
 \end{table}
@@ -661,15 +675,3 @@ Repository & PageRank \\
 \hline
 \end{tabularx}
 \end{table}
-
-
-\section{Evaluation Metrics}
-
-Each method described above in section (PROPER SECTION CITATION) is evaluated using the same evaluation metrics for comparison.
-
-\subsection{Precision / Recall}
-
-\subsection{Hit Ratio}
-
-\subsection{Operator Receiver Curve}
-

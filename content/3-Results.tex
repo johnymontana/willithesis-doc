@@ -4,6 +4,18 @@
 \chapter{Evaluation}
 
 The result of the algorithm is a set of user ids that are predicted destination nodes, given a specific source node. These are recommended users that the specified user might be interested in following. 
+
+\section{Evaluation Metrics}
+
+Each method described above in section (PROPER SECTION CITATION) is evaluated using the same evaluation metrics for comparison.
+
+\subsection{Precision}
+
+\subsection{HitRatio@k (Recall)}
+
+\subsection{F-Measure}
+
+
 \begin{table}[t]
 \caption{Evaluation metrics for cross fold validation runs with varying parameters. K is number of neighbors allowed to vote. N is number of predicted links. Precision and accuracy are evaluation metrics, expressed in percentages. Random is the probability of at least one of the N links being relevant if N links are chosen at random.}
 \label{results}
@@ -65,28 +77,81 @@ Linux (Server) & 10 \\
 \small\renewcommand{\arraystretch}{1.4}  
 \rowcolors{1}{tablerowcolor}{tablebodycolor}
 %
-\captionabove[Mean-field predictions for the critical temperature of the Ising model]{Comparison of the mean-field predictions for the critical temperature of the Ising model with exact results and the best known estimates for different spatial dimensions $d$ and lattice symmetries.}
-\label{tab:IsingModel}
+\captionabove[Evaluation results - Jaccard]{Evaluation results for Jaccard similarity, for various values of $N$, where $N$ is the number of predictions generated for each user.}
+\label{results_jaccard}
 %
 \begin{tabularx}{0.5\textwidth}{lXXX}
 \hline
 \rowcolor{tableheadcolor}
-lattice & $d$ & $q$ & $T_\text{mf}/T_c$ \\
+$N$ & HitRatio@$N$ & Precision & F-Measure \\
 \hline
-square  & 2 & 4 & 1.763 \\
-%
-triangular & 2 & 6 & 1.648 \\
-%
-diamond & 3 & 4 & 1.479 \\
-%
-simple cubic & 3 & 6 & 1.330 \\
-%
-bcc & 3 & 8 & 1.260 \\
-%
-fcc & 3 & 12 & 1.225 \\
+5 & 0.0494 & 0.0115 & 1.2 \\
+10 & 0.0329 & 0.0039 & 1.2 \\
+20 &0.0409 & 0.0025 & 1.2 \\
+40 & 0.0389 & 0.0011 & 1.2 \\
+50 & 0.0392 & 0.0010 & 1.2 \\
+75 & 0.0285 & 5.0994 & 1.2 \\
 \hline
 \end{tabularx}
 \end{table}
+
+\begin{table}[ht]
+\centering
+\small\renewcommand{\arraystretch}{1.4}  
+\rowcolors{1}{tablerowcolor}{tablebodycolor}
+%
+\captionabove[Evaluation results - Triadic Closeness]{Evaluation results for Triadic Closeness, for various values of $N$, where $N$ is the number of predictions generated for each user.}
+\label{results_jaccard}
+%
+\begin{tabularx}{0.5\textwidth}{lXXX}
+\hline
+\rowcolor{tableheadcolor}
+$N$ & HitRatio@$N$ & Precision & F-Measure \\
+\hline
+5 & 0.0364 & 0.0115 & 1.2 \\
+10 & 0.0410 & 0.0039 & 1.2 \\
+20 & 0.0479 & 0.0025 & 1.2 \\
+40 & 0.0526 & 0.0011 & 1.2 \\
+50 & 0.0392 & 0.0010 & 1.2 \\
+75 & 0.0522 & 5.0994 & 1.2 \\
+100 & 0.0392 & 0.132 & 1.2 \\
+250 & 0.0285 & 0.3242 & 1.2 \\
+500 & 0.0135 & 0.3234 & 1.2 \\
+1000 & 0.033 & 0.3211 & 1.2 \\
+5000 & 0.0166 & 0.4431 & 1.2 \\
+\hline
+\end{tabularx}
+\end{table}
+
+\begin{table}[ht]
+\centering
+\small\renewcommand{\arraystretch}{1.4}  
+\rowcolors{1}{tablerowcolor}{tablebodycolor}
+%
+\captionabove[Evaluation results - Adaptive Ensemble]{Evaluation results for Adaptive Ensemble, for various values of $N$, where $N$ is the number of predictions generated for each user.}
+\label{results_jaccard}
+%
+\begin{tabularx}{0.5\textwidth}{lXXX}
+\hline
+\rowcolor{tableheadcolor}
+$N$ & HitRatio@$N$ & Precision & F-Measure \\
+\hline
+5 & 0.0364 & 0.0115 & 1.2 \\
+10 & 0.0410 & 0.0039 & 1.2 \\
+20 & 0.0479 & 0.0025 & 1.2 \\
+40 & 0.0526 & 0.0011 & 1.2 \\
+50 & 0.0392 & 0.0010 & 1.2 \\
+75 & 0.0522 & 5.0994 & 1.2 \\
+100 & 0.0392 & 0.132 & 1.2 \\
+250 & 0.0285 & 0.3242 & 1.2 \\
+500 & 0.0135 & 0.3234 & 1.2 \\
+1000 & 0.033 & 0.3211 & 1.2 \\
+5000 & 0.0166 & 0.4431 & 1.2 \\
+\hline
+\end{tabularx}
+\end{table}
+
+
 
 
 \begin{figure}[htb]
