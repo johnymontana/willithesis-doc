@@ -1,0 +1,17 @@
+\boolfalse {citerequest}\boolfalse {citetracker}\boolfalse {pagetracker}\boolfalse {backtracker}\relax
+\defcounter {refsection}{0}\relax
+\select@language {english}
+\addvspace {10\p@ }
+\addvspace {10\p@ }
+\contentsline {figure}{\numberline {\relax 2.1}{\ignorespaces Item Link Prediction}}{3}{figure.caption.3}
+\addvspace {10\p@ }
+\contentsline {figure}{\numberline {\relax 3.1}{\ignorespaces Sample network}}{7}{figure.caption.4}
+\contentsline {figure}{\numberline {\relax 3.2}{\ignorespaces triad patterns}}{9}{figure.caption.6}
+\contentsline {figure}{\numberline {\relax 3.3}{\ignorespaces Example of Neo4j Cypher query language used to calculate Jaccard metric for pairs of users.\relax }}{11}{figure.caption.9}
+\contentsline {figure}{\numberline {\relax 3.4}{\ignorespaces GitHub graph data model}}{12}{figure.caption.10}
+\contentsline {figure}{\numberline {\relax 3.5}{\ignorespaces User-User data model}}{12}{figure.caption.11}
+\contentsline {figure}{\numberline {\relax 3.6}{\ignorespaces GitHub data model as a property graph. Screenshot from Neo4j graph database interface.\relax }}{14}{figure.caption.13}
+\addvspace {10\p@ }
+\addvspace {10\p@ }
+\addvspace {10\p@ }
+\contentsfinish

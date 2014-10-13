@@ -38,6 +38,13 @@
 % Doc: calc.pdf
 \usepackage{calc}
 
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+%\usepackage{algorithmicx}
+%\usepackage[named]{algo}
+%\usepackage{algorithmic}
+
+
 % Description: Multi Language support for LaTeX
 % Doc: babel.pdf
 \usepackage{babel}
@@ -127,6 +134,12 @@
 \usepackage{relsize}
 
 \EndCodeSection{PackagesFonts}
+
+%~~~~~~~~~~~~~~~~~~~~
+% Algorithm Package
+% ~~~~~~~~~~~~~~~~~~~~
+%\usepackage{algorithmic}
+
 
 % ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 % Math Packages
@@ -493,7 +506,7 @@
   % citestyle=alphabetic, % load a citatio style
   natbib=true, % define natbib compatible cite commands
 %%--- Backend --- --- ---
-  backend=biber,   % (bibtex, biber)
+  backend=bibtex,   % (bibtex, biber)
   bibwarn=true,     %
   texencoding=auto, % auto-detect the input encoding
   bibencoding=auto, % (auto (equal to tex), <encoding>)
@@ -566,7 +579,7 @@
 %              works well together with the caption pack.
 % load before: caption 
 % Doc: floatrow.pdf 
-\usepackage{floatrow, fr-fancy}
+%\usepackage{floatrow, fr-fancy}
 
 % Description: The caption package offers customization
 %              of captions in floating environments such

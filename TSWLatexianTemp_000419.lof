@@ -1,0 +1,24 @@
+\boolfalse {citerequest}\boolfalse {citetracker}\boolfalse {pagetracker}\boolfalse {backtracker}\relax
+\defcounter {refsection}{0}\relax
+\select@language {english}
+\addvspace {10\p@ }
+\addvspace {10\p@ }
+\contentsline {figure}{\numberline {\relax 2.1}{\ignorespaces Item Link Prediction}}{3}{figure.caption.3}
+\addvspace {10\p@ }
+\contentsline {figure}{\numberline {\relax 3.1}{\ignorespaces Sample network}}{7}{figure.caption.4}
+\contentsline {figure}{\numberline {\relax 3.2}{\ignorespaces closed triad patterns}}{11}{figure.caption.7}
+\contentsline {figure}{\numberline {\relax 3.3}{\ignorespaces triad patterns}}{12}{figure.caption.8}
+\contentsline {figure}{\numberline {\relax 3.4}{\ignorespaces closed triad patterns}}{12}{figure.caption.9}
+\contentsline {figure}{\numberline {\relax 3.5}{\ignorespaces Adding multi modal edges to sample network}}{17}{figure.caption.12}
+\contentsline {figure}{\numberline {\relax 3.6}{\ignorespaces Example of Neo4j Cypher query language used to calculate Jaccard metric for pairs of users.\relax }}{18}{figure.caption.13}
+\contentsline {figure}{\numberline {\relax 3.7}{\ignorespaces GitHub graph data model}}{19}{figure.caption.14}
+\contentsline {figure}{\numberline {\relax 3.8}{\ignorespaces User-User data model}}{20}{figure.caption.15}
+\contentsline {figure}{\numberline {\relax 3.9}{\ignorespaces GitHub data model as a property graph. Screenshot from Neo4j graph database interface.\relax }}{23}{figure.caption.19}
+\addvspace {10\p@ }
+\contentsline {figure}{\numberline {\relax 4.1}{\ignorespaces Test image for television}}{27}{figure.caption.25}
+\contentsline {figure}{\numberline {\relax 4.2}{\ignorespaces Demonstration of the \emph {subfigure} environment inside a figure environment\relax }}{29}{figure.caption.26}
+\contentsline {figure}{\numberline {\relax 4.3}{\ignorespaces Demonstration of the \emph {subfigure} environment inside a figure environment\relax }}{30}{figure.caption.27}
+\addvspace {10\p@ }
+\addvspace {10\p@ }
+\addvspace {10\p@ }
+\contentsfinish

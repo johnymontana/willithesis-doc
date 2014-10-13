@@ -1,0 +1,99 @@
+% $ biblatex auxiliary file $
+% $ biblatex version 2.2 $
+% Do not modify the above lines!
+%
+% This is an auxiliary file used by the 'biblatex' package.
+% This file may safely be deleted. It will be recreated as
+% required.
+%
+\begingroup
+\makeatletter
+\@ifundefined{ver@biblatex.sty}
+  {\@latex@error
+     {Missing 'biblatex' package}
+     {The bibliography requires the 'biblatex' package.}
+      \aftergroup\endinput}
+  {}
+\endgroup
+
+\entry{githubarchive}{online}{}
+  \field{labelalpha}{Git}
+  \verb{url}
+  \verb http://www.githubarchive.org/
+  \endverb
+\endentry
+
+\entry{companion}{book}{}
+  \name{author}{3}{}{%
+    {{}%
+     {Goossens}{G.}%
+     {Michel}{M.}%
+     {}{}%
+     {}{}}%
+    {{}%
+     {Mittelbach}{M.}%
+     {Frank}{F.}%
+     {}{}%
+     {}{}}%
+    {{}%
+     {Samarin}{S.}%
+     {Alexander}{A.}%
+     {}{}%
+     {}{}}%
+  }
+  \list{publisher}{1}{%
+    {Addison-Wesley}%
+  }
+  \strng{namehash}{GM+1}
+  \strng{fullhash}{GMMFSA1}
+  \field{labelalpha}{Goo94}
+  \field{sortinit}{G}
+  \field{edition}{1}
+  \field{hyphenation}{american}
+  \field{indextitle}{LaTeX Companion, The}
+  \field{pagetotal}{528}
+  \field{shorttitle}{LaTeX Companion}
+  \field{title}{The LaTeX Companion}
+  \list{location}{1}{%
+    {Reading, Mass.}%
+  }
+  \field{annotation}{%
+  A book with three authors. Note the formatting of the author list. By
+  default, only the first name is reversed in the bibliography%
+  }
+  \field{year}{1994}
+\endentry
+
+\entry{Rodriguez}{article}{}
+  \name{author}{2}{}{%
+    {{}%
+     {Rodriguez}{R.}%
+     {Marko~A}{M.~A.}%
+     {}{}%
+     {}{}}%
+    {{}%
+     {Neubauer}{N.}%
+     {Peter}{P.}%
+     {}{}%
+     {}{}}%
+  }
+  \strng{namehash}{RMA+1}
+  \strng{fullhash}{RMANP1}
+  \field{labelalpha}{Rod}
+  \field{sortinit}{R}
+  \verb{eprint}
+  \verb arXiv:1004.1001v1
+  \endverb
+  \field{pages}{1\bibrangedash 18}
+  \field{title}{{The Graph Traversal Pattern}}
+  \verb{file}
+  \verb :Users/lyonwj/Library/Application Support/Mendeley Desktop/Downloaded/R
+  \verb odriguez, Neubauer - Unknown - The Graph Traversal Pattern.pdf:pdf
+  \endverb
+  \field{eprinttype}{arXiv}
+\endentry
+
+\lossort
+\endlossort
+
+\endinput

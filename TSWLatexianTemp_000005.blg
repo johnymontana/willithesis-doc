@@ -1,0 +1,73 @@
+This is BibTeX, Version 0.99d (TeX Live 2013)
+Capacity: max_strings=35307, hash_size=35307, hash_prime=30011
+The top-level auxiliary file: TSWLatexianTemp_000005.aux
+The style file: biblatex.bst
+A level-1 auxiliary file: content/0-title.aux
+A level-1 auxiliary file: content/0-Abstract.aux
+A level-1 auxiliary file: content/0-Introduction.aux
+A level-1 auxiliary file: content/1-Theory.aux
+A level-1 auxiliary file: content/2-Experiments.aux
+A level-1 auxiliary file: content/3-Results.aux
+A level-1 auxiliary file: content/4-Summery.aux
+Reallocated singl_function (elt_size=4) to 100 items from 50.
+Reallocated singl_function (elt_size=4) to 100 items from 50.
+Reallocated singl_function (elt_size=4) to 100 items from 50.
+Reallocated singl_function (elt_size=4) to 100 items from 50.
+Reallocated singl_function (elt_size=4) to 100 items from 50.
+Reallocated wiz_functions (elt_size=4) to 6000 items from 3000.
+Reallocated singl_function (elt_size=4) to 100 items from 50.
+Reallocated singl_function (elt_size=4) to 100 items from 50.
+Reallocated singl_function (elt_size=4) to 100 items from 50.
+Reallocated singl_function (elt_size=4) to 100 items from 50.
+Reallocated singl_function (elt_size=4) to 100 items from 50.
+Database file #1: TSWLatexianTemp_000005-blx.bib
+Database file #2: bib/BibtexDatabase.bib
+Warning--I didn't find a database entry for "cf"
+Warning--I didn't find a database entry for "wtf"
+Warning--I didn't find a database entry for "githubarchive"
+Warning--I didn't find a database entry for "github:Online"
+Biblatex version: 2.6
+Reallocated singl_function (elt_size=4) to 100 items from 50.
+Reallocated wiz_functions (elt_size=4) to 9000 items from 6000.
+You've used 3 entries,
+            6019 wiz_defined-function locations,
+            1154 strings with 8841 characters,
+and the built_in function-call counts, 10887 in all, are:
+= -- 394
+> -- 754
+< -- 105
++ -- 566
+- -- 539
+* -- 607
+:= -- 1177
+add.period$ -- 0
+call.type$ -- 3
+change.case$ -- 50
+chr.to.int$ -- 58
+cite$ -- 4
+duplicate$ -- 937
+empty$ -- 907
+format.name$ -- 142
+if$ -- 2036
+int.to.chr$ -- 0
+int.to.str$ -- 6
+missing$ -- 0
+newline$ -- 91
+num.names$ -- 122
+pop$ -- 696
+preamble$ -- 1
+purify$ -- 51
+quote$ -- 0
+skip$ -- 503
+stack$ -- 0
+substring$ -- 409
+swap$ -- 331
+text.length$ -- 93
+text.prefix$ -- 4
+top$ -- 1
+type$ -- 102
+warning$ -- 0
+while$ -- 111
+width$ -- 0
+write$ -- 87
+(There were 4 warnings)

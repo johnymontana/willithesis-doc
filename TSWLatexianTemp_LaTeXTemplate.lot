@@ -1,0 +1,14 @@
+\boolfalse {citerequest}\boolfalse {citetracker}\boolfalse {pagetracker}\boolfalse {backtracker}\relax
+\defcounter {refsection}{0}\relax
+\select@language {english}
+\addvspace {10\p@ }
+\addvspace {10\p@ }
+\addvspace {10\p@ }
+\contentsline {table}{\numberline {\relax 3.1}{\ignorespaces Open triad pattern frequency in the sample network shown in Figure CITATION NEEDED\relax }}{10}{table.caption.7}
+\contentsline {table}{\numberline {\relax 3.2}{\ignorespaces Closed triad pattern frequency in the sample network shown in Figure CITATION NEEDED\relax }}{10}{table.caption.8}
+\contentsline {table}{\numberline {\relax 3.3}{\ignorespaces Dataset descriptive statistics\relax }}{14}{table.caption.12}
+\addvspace {10\p@ }
+\contentsline {table}{\numberline {\relax 4.1}{\ignorespaces Evaluation metrics for cross fold validation runs with varying parameters. K is number of neighbors allowed to vote. N is number of predicted links. Precision and accuracy are evaluation metrics, expressed in percentages. Random is the probability of at least one of the N links being relevant if N links are chosen at random.\relax }}{16}{table.caption.14}
+\addvspace {10\p@ }
+\addvspace {10\p@ }
+\contentsfinish
