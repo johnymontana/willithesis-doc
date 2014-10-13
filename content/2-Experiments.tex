@@ -4,16 +4,12 @@
 \chapter{Methods}
 Here we describe the data used and detail the implementation. We first examine in detail two methods for link prediction: collaborative filtering using the Jaccard similarity metric and the Triadic Closeness method. We then show how these two methods can be used together in an ensemble predictor using adaptive weights. The data used in this experiment is examined. Finally, implementation is discussed. 
 
-\section{Algorithms}
+We focus on the link prediction problem for a partially observed network. We assume certain links are missing form the network and attempt to predict the missing link(s), focusing on User-User edges.
 
+\section{Sample Network}
+Consider the network shown in figure \ref{thesis_sample_network}. This is a sample network which was randomly generated and does not represent any real world observed data, however we shall refer to this network to demonstrate the techniques used in this project. The sample network contains two types of nodes: Users and Items. Each User can \textit{FOLLOW} other Users. This is represented as a User-User directed edge with the label \textit{:FOLLOWS}. Similarly, Users can express their interest in an Item with the \textit{:LIKES} relationship (or edge). This type of network structure is similar to those observed in social networks (such as Facebook, or Twitter), but also in collaboration networks (such as Github, as we will see in more detail). Since the network has multiple types of nodes and edges it is referred to as a \textbf{multi-modal network}. (CITE GRAPH THEORY / COMPLEX NETWORK BOOK). 
 
-\subsection{Sample Graph}
-Consider the network shown in figure \ref{thesis_sample_network}. This is a sample network which was randomly generated and does not represent any real world observed data, however we shall refer to this network to demonstrate the techniques used in this project.
-
-
-
-\begin{figure}[H]  \centering  \includegraphics[width=0.75\textwidth]{images/thesis_sample_network_multimodal.png}  \caption[Sample network]{Sample social network of hypothetical }  \label{thesis_sample_network}\end{figure}
-
+\begin{figure}[H]  \centering  \includegraphics[width=0.75\textwidth]{images/thesis_sample_network_multimodal.png}  \caption[Sample multi-modal network]{This sample network will be used to demonstrate the methods used for link prediction in this paper. This network demonstrates a random multi-modal network with multiple types of nodes and edges.}  \label{thesis_sample_network}\end{figure}
 
 \begin{table}[t]
 \caption{Descriptive statistics for sample network}
@@ -38,19 +34,16 @@ OTHERS & ??\\
 \vskip -0.1in
 \end{table}
 
-We will generate recommendations for a user in the sample network using each of the three methods: 1) collaborative filtering, 2) triadic closeness, and 3) a new approach combining triadic closeness and multi-modal relationship types that has been presented here for the first time.
+Some basic descriptive statistics about this sample network are shown in Table \ref{sample_network_stats}. 
 
-As mentioned previously, generating recommendations can be thought of as link prediction: we are identifying links that do not appear in the network and predicting links that will either 1) appear in the future or 2) in the case of a partially observed network, links that exist but are not observed.
+\section{Algorithms}
+
+For illustrative purposes we will work through three examples of link prediction algorithms for the sample network shown above. First, using the collaborative filtering method with the Jaccard similarity metric. We will use User-Item edges to identify similar uses and generate recommendations based on those similarities. Next, we walk through the Triadic Closeness method as described in \cite{Schall2014}. Using probabilities observed from triad patterns we will generate link predictions and compare to those created using collaborative filtering. Finaly, we propose a ensemble method that combines collaborative filtering and Triadic Closeness using an adaptive weighting system. In the context of the sample network we focus on predicting User-User \textit{:FOLLOWS} edges only.
 
 For the purposes of the next three sections we will consider link prediction for user J. We proceed through each algorithm manually, ignoring some implementation details for now that will explored in depth in the proceeding section.
 
 \subsection{Collaborative Filtering}
-TODO: REWRITE THIS PIECE TO MAKE USE OF REPOS / STARS
-
-Collaborative filtering is a method of generating recommendations based on the homophily principle: users who are similar are likely to be interested in similar items. It is implemented by finding similar users, allowing each similar user to "vote" for recommendations and suggested items with the highest score. This is similar to the kNN algorithm used for classification.\cite{cf}
-
-Collaborative filtering is usually used in the context of user-item recommendation, so here we simply treat other users as items (as necessary).
-
+Collaborative filtering is a method of generating recommendations based on the homophily principle: users who are similar are likely to be interested in similar items. It is implemented by finding similar users, based on some similarity metric. \cite{cf} Here we will use User-Item edges as an indication of a User's binary rating of an Item. The Jaccard metric is used to show a proportion of overlapping neighbors
 
 \subsubsection{Similarity Metrics}
 The Jaccard index is used to identify similar users. For two users, $a$ and $b$, let $A$ and $B$ denote the sets of all users being followed by $a$ and $b$, respectively. The Jaccard index is therefore as defined in Equation \ref{jaccard}.
@@ -59,7 +52,7 @@ The Jaccard index is used to identify similar users. For two users, $a$ and $b$,
 J(A,B) = \frac{|A \cap B|}{|A \cup B|}
 \end{equation}
 
-In this context, Jaccard is defined as the intersection of the users followed by $a$ and $b$ divided by the union of the users followed by $a$ and $b$. This results in a number between 0 and 1, indicating the strength of similarity between users $a$ and $b$.
+In this context, Jaccard is defined as the intersection of the Items liked by $a$ and $b$ divided by the union of the items likes by $a$ and $b$. This results in a number between 0 and 1, indicating the strength of similarity between users $a$ and $b$.
  
 %\begin{algorithm}[tb]
 %
@@ -78,6 +71,7 @@ In this context, Jaccard is defined as the intersection of the users followed by
 %\end{algorithmic}
 %\end{algorithm}
 
+FIXME: THIS NEEDS TO BE UPDATED FOR NEW DATA MODEL
 \begin{algorithm}
 \caption{Collaborative filtering algorithm}\label{algo1}
 \begin{algorithmic}[1]
@@ -115,35 +109,16 @@ In this context, Jaccard is defined as the intersection of the users followed by
 \end{algorithmic}
 \end{algorithm}
 
-To generate recommendations for user $J$, we first must identify all friend-of-friend nodes, that is nodes that share a neighbor in common with $J$. That gives us the set $\{G, L\}$. Our possible recommendations are now reduced to G, L. We will now compute the Jaccard similarity metric for the pairs $(J, G)$ and $(J, L)$:
+To generate recommendations for user $J$, we first must identify all friend-of-friend nodes, that is nodes that share a neighbor Item in common with $J$. That gives us the set $\{N\}$. Our possible recommendations are now reduced to N. We will now compute the Jaccard similarity metric for the pair $(J, N)$:
 
 \begin{equation}
 \label{jaccard}
-J(J,G) = \frac{|J \cap G|}{|J \cup G|}
+J(J,N) = \frac{|J \cap N|}{|J \cup N|}
 \end{equation}
 
 \begin{equation}
 \label{jaccard}
-J(J,G) = \frac{|\{F\}|}{|\{P, F, K\}|}
-\end{equation}
-
-\begin{equation}
-\label{jaccard}
-J(J,G) = \frac{1}{3}
-\end{equation}
-
-and for J(J,L):
-
-TODO: adjust network so Jaccard calculation is different
-
-\begin{equation}
-\label{jaccard}
-J(J,L) = \frac{|J \cap L|}{|J \cup L|}
-\end{equation}
-
-\begin{equation}
-\label{jaccard}
-J(J,G) = \frac{|\{P\}|}{|\{F, P, Q\}|}
+J(J,N) = \frac{|\{Item2\}|}{|\{Item2, Item4, Item5\}|}
 \end{equation}
 
 \begin{equation}
@@ -151,20 +126,19 @@ J(J,G) = \frac{|\{P\}|}{|\{F, P, Q\}|}
 J(J,G) = \frac{1}{3}
 \end{equation}
 
-We now take the top $k$ nodes that have the highest Jaccard score and allow each to vote for new outgoing links to form from $J$. Here we will select $L$ and recommend any outgoing links from $L$ as destination nodes for predicted links emminating from $J$. In this case we predict the link $J \rightarrow Q$.
+We can now predict the edge $J\ leftarrow N$ with weight $1/3$. 
+
+\footnote{If we were interested in predicting User-Item links, we could allow each similar user to \textit{vote} for other Items in which J might have an interest. We now take the top $k$ nodes that have the highest Jaccard score and allow each to vote for new outgoing links to form from $J$. Here we will select $L$ and recommend any outgoing links from $L$ as destination nodes for predicted links emminating from $J$. However, we are only concerned here with User-User edges.}
 
 As you can see, the collaborative filtering link prediction process for a given user $x$ involves finding other users most similar to user $x$, then finding items those similar users are most interested in. In this sense collaborative filtering can be thought of as very similar to k-nearest neighbors, where the distance calculation is based on some similarity metric.
 
-
-
-
 \subsection{Triadic Closeness}
-Graph theory proposes the concept of triadic closure, the hypothesis that the creation of an edge between u and v is related to the degree of overlapping neighbors in u and v's respective networks. (CITATION NEEDED and expand on this - see one of the network analysis books I have) The concept of Triadic Closeness is an application of the theory of triadic closure, specifically taking into account the directed nature of social networks. For a given fully observed network, Triadic Closeness can be thought of as the ratio of the number of closed triads to the number of potentially closed triads. (CITATION NEEDED Schall 2013). A triad consists of three nodes $u, z, v$ where edges (ignoring direction) $u,z$ and $z,v$ exist. Edges between $u$ and $v$ may exist, however the concept of triadic closure posits that an implicit connection exists between $u$ and $v$.
+Graph theory proposes the concept of triadic closure, the hypothesis that the creation of an edge between u and v is related to the degree of overlapping neighbors in u and v's respective networks. (CITATION NEEDED and expand on this - see one of the network analysis books I have) The concept of Triadic Closeness is an application of the theory of triadic closure, specifically taking into account the directed nature of social networks. For a given fully observed network, Triadic Closeness can be thought of as the ratio of the number of closed triads to the number of potentially closed triads. \cite{Schall2014}. A triad consists of three nodes $u, z, v$ where edges (ignoring direction) $u,z$ and $z,v$ exist. Edges between $u$ and $v$ may exist, however the concept of triadic closure posits that an implicit connection exists between $u$ and $v$.
 
-\begin{figure}[H]  \centering  \includegraphics[width=0.75\textwidth]{images/thesis_triad_example.png}  \caption[closed triad patterns]{A triad is considered to be closed if an edge exists between u and v.}  \label{thesis_closed_triads}\end{figure}
+\begin{figure}[H]  \centering  \includegraphics[width=0.4\textwidth]{images/thesis_triad_example.png}  \caption[closed triad patterns]{A triad is considered to be closed if an edge exists between u and v.}  \label{thesis_closed_triads}\end{figure}
 
 
-In a directed network there are 27 distinct configurations, or patterns that a triad can take on. See (CITATION TABLE of triad patterns). Table XXXXX (CITE ME) shows triad patterns that are open, that is no connection exists between nodes $u$ and $v$. The pattern identifications $(T01, T02...)$ are taken from (CITE PROPERLY) Schall 2013. Any open triad can be closed in one of three possible ways: $u \leftarrow v$, $u \rightarrow v$, or $u \leftrightarrow v$.
+In a directed network there are 27 distinct configurations, or patterns that a triad can take on. See (CITATION TABLE of triad patterns). Table \ref{sample_network_freq} shows triad patterns that are open, that is no connection exists between nodes $u$ and $v$. The pattern identifications $(T01, T02...)$ are taken from (CITE PROPERLY) Schall 2013. Any open triad can be closed in one of three possible ways: $u \leftarrow v$, $u \rightarrow v$, or $u \leftrightarrow v$.
 
 INSERT IMAGE OF 3 CLOSED TRIAD PATTERNS 
 \begin{figure}[H]  \centering  \includegraphics[width=0.75\textwidth]{images/thesis_triad_patterns.png}  \caption[triad patterns]{All possible open triad patterns are shown. A triad is said to be closed is a connection is established between u and v.}  \label{thesis_triad_patterns}\end{figure}
@@ -364,12 +338,16 @@ TC_{JQ} = .048
 We can then sort our recommendations by TC and the most likely edge we will recommend is $J \rightarrow Q$.
 
 \subsection{An adaptive ensemble method}
-Linear combination of similarity metric (Jaccard) and network based method (triadic closeness).
-Why might this be beneficial?
+Each of the two methods described above do not fully capture the information needed to make robust recommendations:
+\begin{itemize}
+\item Collaborative filtering captures similar items to identify nodes that a user might find interesting, however the model does not capture any probabilistic information to inform how likely the link is to form, given the relevant/similar node.
+\item While Triadic Closeness captures probabilistic information that informs how likely certain triad patterns are to close, it is not informed by any user rating observations. This results in predictions based solely on patterns and ignoring content similarity.
+\end{itemize}
 
-\begin{figure}[H]  \centering  \includegraphics[width=0.75\textwidth]{images/thesis_sample_network_multimodal.png}  \caption[Adding multi modal edges to sample network]{We now }  \label{thesis_triad_patterns}\end{figure}
+We next examine how these two methods can be combined to improve link prediction. \cite{Lu2010} identifies such hybrid methods as a way to improve accuracy of link prediction beyond what any one algorithm might be able to obtain.
 
-\begin{equation}new_shit_{uv} = \sum_{z\in \Gamma(u)\cap \Gamma(v)} w^{P}(u, v, z) \times w(z)  
+
+\begin{equation}AEM{uv} = \sum_{z\in \Gamma(u)\cap \Gamma(v)} w^{P}(u, v, z) \times w(z)  
 \end{equation}
 
 

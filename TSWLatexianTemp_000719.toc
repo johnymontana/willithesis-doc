@@ -1,0 +1,46 @@
+\boolfalse {citerequest}\boolfalse {citetracker}\boolfalse {pagetracker}\boolfalse {backtracker}\relax
+\defcounter {refsection}{0}\relax
+\select@language {english}
+\contentsline {chapter}{\numberline {1}Introduction}{1}{chapter.1}
+\contentsline {section}{\numberline {1.1}Online Social Collaboration Networks}{1}{section.1.1}
+\contentsline {section}{\numberline {1.2}This project}{1}{section.1.2}
+\contentsline {chapter}{\numberline {2}Previous Work}{3}{chapter.2}
+\contentsline {section}{\numberline {2.1}Recommendation As Link Prediction}{3}{section.2.1}
+\contentsline {section}{\numberline {2.2}User-User Recommender Systems}{3}{section.2.2}
+\contentsline {subsection}{\numberline {2.2.1}Similarity Based Methods}{4}{subsection.2.2.1}
+\contentsline {subsection}{\numberline {2.2.2}Network Based Methods}{4}{subsection.2.2.2}
+\contentsline {section}{\numberline {2.3}Directed Social Networks}{4}{section.2.3}
+\contentsline {section}{\numberline {2.4}My Approach}{4}{section.2.4}
+\contentsline {chapter}{\numberline {3}Methods}{7}{chapter.3}
+\contentsline {section}{\numberline {3.1}Sample Network}{7}{section.3.1}
+\contentsline {section}{\numberline {3.2}Algorithms}{9}{section.3.2}
+\contentsline {subsection}{\numberline {3.2.1}Collaborative Filtering}{9}{subsection.3.2.1}
+\contentsline {subsubsection}{Similarity Metrics}{9}{subsubsection*.6}
+\contentsline {subsection}{\numberline {3.2.2}Triadic Closeness}{11}{subsection.3.2.2}
+\contentsline {subsection}{\numberline {3.2.3}An adaptive ensemble method}{16}{subsection.3.2.3}
+\contentsline {section}{\numberline {3.3}Implementation}{17}{section.3.3}
+\contentsline {subsection}{\numberline {3.3.1}Graph Data Model}{17}{subsection.3.3.1}
+\contentsline {subsection}{\numberline {3.3.2}Graph Traversal Pattern}{17}{subsection.3.3.2}
+\contentsline {subsection}{\numberline {3.3.3}Graph Database And Querying Traversals}{17}{subsection.3.3.3}
+\contentsline {subsection}{\numberline {3.3.4}}{17}{subsection.3.3.4}
+\contentsline {subsection}{\numberline {3.3.5}Triad detection}{17}{subsection.3.3.5}
+\contentsline {subsection}{\numberline {3.3.6}Steps}{18}{subsection.3.3.6}
+\contentsline {section}{\numberline {3.4}Data}{19}{section.3.4}
+\contentsline {subsection}{\numberline {3.4.1}Github Archive}{19}{subsection.3.4.1}
+\contentsline {subsubsection}{FollowEvent}{19}{subsubsection*.15}
+\contentsline {subsubsection}{WatchEvent (Stars)}{20}{subsubsection*.16}
+\contentsline {subsection}{\numberline {3.4.2}Data munging}{21}{subsection.3.4.2}
+\contentsline {subsection}{\numberline {3.4.3}Data Analysis}{22}{subsection.3.4.3}
+\contentsline {section}{\numberline {3.5}Evaluation Metrics}{25}{section.3.5}
+\contentsline {subsection}{\numberline {3.5.1}Precision / Recall}{25}{subsection.3.5.1}
+\contentsline {subsection}{\numberline {3.5.2}Hit Ratio}{25}{subsection.3.5.2}
+\contentsline {subsection}{\numberline {3.5.3}Operator Receiver Curve}{25}{subsection.3.5.3}
+\contentsline {chapter}{\numberline {4}Evaluation}{27}{chapter.4}
+\contentsline {subsection}{\numberline {4.0.4}Evaluation}{28}{subsection.4.0.4}
+\contentsline {section}{\numberline {4.1}Discussion}{30}{section.4.1}
+\contentsline {chapter}{\numberline {5}Summery and Outlook}{31}{chapter.5}
+\contentsline {chapter}{Bibliography}{33}{chapter*.28}
+\contentsline {part}{Appendix}{41}{chapter*.33}
+\contentsline {chapter}{\numberline {A}First chapter of appendix}{41}{appendix.A}
+\contentsline {section}{\numberline {A.1}Parameters}{41}{section.A.1}
+\contentsfinish
