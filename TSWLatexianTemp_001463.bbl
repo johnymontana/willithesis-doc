@@ -1,0 +1,162 @@
+% $ biblatex auxiliary file $
+% $ biblatex version 2.2 $
+% Do not modify the above lines!
+%
+% This is an auxiliary file used by the 'biblatex' package.
+% This file may safely be deleted. It will be recreated as
+% required.
+%
+\begingroup
+\makeatletter
+\@ifundefined{ver@biblatex.sty}
+  {\@latex@error
+     {Missing 'biblatex' package}
+     {The bibliography requires the 'biblatex' package.}
+      \aftergroup\endinput}
+  {}
+\endgroup
+
+\entry{githubarchive}{online}{}
+  \field{labelalpha}{Git}
+  \verb{url}
+  \verb http://www.githubarchive.org/
+  \endverb
+\endentry
+
+\entry{companion}{book}{}
+  \name{author}{3}{}{%
+    {{}%
+     {Goossens}{G.}%
+     {Michel}{M.}%
+     {}{}%
+     {}{}}%
+    {{}%
+     {Mittelbach}{M.}%
+     {Frank}{F.}%
+     {}{}%
+     {}{}}%
+    {{}%
+     {Samarin}{S.}%
+     {Alexander}{A.}%
+     {}{}%
+     {}{}}%
+  }
+  \list{publisher}{1}{%
+    {Addison-Wesley}%
+  }
+  \strng{namehash}{GM+1}
+  \strng{fullhash}{GMMFSA1}
+  \field{labelalpha}{Goo94}
+  \field{sortinit}{G}
+  \field{edition}{1}
+  \field{hyphenation}{american}
+  \field{indextitle}{LaTeX Companion, The}
+  \field{pagetotal}{528}
+  \field{shorttitle}{LaTeX Companion}
+  \field{title}{The LaTeX Companion}
+  \list{location}{1}{%
+    {Reading, Mass.}%
+  }
+  \field{annotation}{%
+  A book with three authors. Note the formatting of the author list. By
+  default, only the first name is reversed in the bibliography%
+  }
+  \field{year}{1994}
+\endentry
+
+\entry{Lu2010}{article}{}
+  \name{author}{2}{}{%
+    {{}%
+     {Lu}{L.}%
+     {Linyuan}{L.}%
+     {}{}%
+     {}{}}%
+    {{}%
+     {Zhou}{Z.}%
+     {Tao}{T.}%
+     {}{}%
+     {}{}}%
+  }
+  \strng{namehash}{LL+1}
+  \strng{fullhash}{LLZT1}
+  \field{labelalpha}{Lu10}
+  \field{sortinit}{L}
+  \field{title}{{Link Prediction in Complex Networks: A Survey}}
+  \verb{url}
+  \verb http://arxiv.org/pdf/1010.0725.pdf?origin=publication\_detail
+  \endverb
+  \verb{file}
+  \verb :Users/lyonwj/Library/Application Support/Mendeley Desktop/Downloaded/L
+  \verb u, Zhou - 2010 - Link Prediction in Complex Networks A Survey.pdf:pdf
+  \endverb
+  \field{journaltitle}{arXiv:1010.0725v1}
+  \field{year}{2010}
+\endentry
+
+\entry{Rodriguez}{article}{}
+  \name{author}{2}{}{%
+    {{}%
+     {Rodriguez}{R.}%
+     {Marko~A}{M.~A.}%
+     {}{}%
+     {}{}}%
+    {{}%
+     {Neubauer}{N.}%
+     {Peter}{P.}%
+     {}{}%
+     {}{}}%
+  }
+  \strng{namehash}{RMA+1}
+  \strng{fullhash}{RMANP1}
+  \field{labelalpha}{Rod}
+  \field{sortinit}{R}
+  \verb{eprint}
+  \verb arXiv:1004.1001v1
+  \endverb
+  \field{pages}{1\bibrangedash 18}
+  \field{title}{{The Graph Traversal Pattern}}
+  \verb{file}
+  \verb :Users/lyonwj/Library/Application Support/Mendeley Desktop/Downloaded/R
+  \verb odriguez, Neubauer - Unknown - The Graph Traversal Pattern.pdf:pdf
+  \endverb
+  \field{eprinttype}{arXiv}
+\endentry
+
+\entry{Schall2014}{article}{}
+  \name{author}{1}{}{%
+    {{}%
+     {Schall}{S.}%
+     {Daniel}{D.}%
+     {}{}%
+     {}{}}%
+  }
+  \keyw{Current,Useful,directed graphs \'{a} patterns,prediction \'{a} metrics
+  \'{a},social networks \'{a} link}
+  \strng{namehash}{SD1}
+  \strng{fullhash}{SD1}
+  \field{labelalpha}{Sch14}
+  \field{sortinit}{S}
+  \verb{doi}
+  \verb 10.1007/s13278-014-0157-9
+  \endverb
+  \field{issn}{1869-5450}
+  \field{number}{1}
+  \field{pages}{157}
+  \field{title}{{Link prediction in directed social networks}}
+  \verb{url}
+  \verb http://link.springer.com/10.1007/s13278-014-0157-9
+  \endverb
+  \field{volume}{4}
+  \verb{file}
+  \verb :Users/lyonwj/Library/Application Support/Mendeley Desktop/Downloaded/S
+  \verb chall - 2014 - Link prediction in directed social networks.pdf:pdf
+  \endverb
+  \field{journaltitle}{Social Network Analysis and Mining}
+  \field{month}{02}
+  \field{year}{2014}
+\endentry
+
+\lossort
+\endlossort
+
+\endinput

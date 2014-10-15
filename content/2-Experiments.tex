@@ -398,6 +398,18 @@ Where $count(u-\{:LIKES\}->)$ is the number of outgoing \textit{:LIKES} edges fo
 We can think of each outgoing edge as a rating or vote from that user, expressing their interest. If for a given user we observe 10 \textit{:FOLLOWS} edges and only 1 \textit{:LIKES} edge, we have greater confidence in the accuracy of the Triadic Closeness metric since we have more information about User $u$'s preferences. 
 
 \section{Implementation}
+
+\begin{figure}[ht]
+\vskip 0.2in
+\begin{center}
+\centerline{\includegraphics[width=0.75\columnwidth]{images/thesis_architecture.png}}
+\caption[Link prediction system architecture]{The GitHub follow graph is a simple graph with User nodes and Follows edges.}
+\label{github_simplified_data_model}
+\end{center}
+\vskip -0.2in
+\end{figure} 
+
+
 We implement a system capable of generating recommendations using each of the three methods described above (Jaccard similarity, Triadic Closeness, and an adaptive ensemble method). This system is written in Java and makes use of the Neo4j graph database.
 
 \subsection{Graph Data Model}
@@ -556,24 +568,14 @@ label=watchEventListing]
 }
 \end{lstlisting}
 
-\subsection{Data munging}
-The data from GitHubArchive is available in streaming JSON format and includes all public events generated from the GitHub event API \cite{github:Online} for a given time period. The one year of data collected for this project resulted in several thousand JSON files, each several megabytes in size resulting in a raw dataset of several hundred gigabytes. As this project is only concerned with the user-user {\textit FOLLOWS} relationship, the data is parsed using a Python script to filter for only those {\textit FOLLOWS} events. For further efficiency, the data is reduced to an anonymized edgelist format:
-\begin{verbatim}
-    1	2
-    3	4
-    5	6
-    7	8
-    9	10
-    11	12
-    11	13
-    14	15
-    16	17
-    18	19
-    ...
-\end{verbatim}
-This allows for the dataset to be anonymized using only arbitrary user ids and stored as compactly as possible. In the above example (and in the context of a directed graph) the first column corresponds to the source node and the second column the destination node. So the sample above represents: user 1 follows user 2, user 3 follows user 4, ...
 
-This edgelist file is then used to populate a Neo4j graph database instance, using only the minimal information necessary to implement our link prediction system. 
+
+
+
+\subsection{Data Analysis}
+
+Table \ref{dataset_stats} shows some descriptive statistics about the GitHub dataset used for this project. The observed network consists of 1.7 million nodes (this includes both Users and Repositories) and 10.7 million edges (both User-User $follows$ edges and User-Repository $stars$ edges. 
+
 
 \begin{table}[ht]
 \centering
@@ -581,23 +583,27 @@ This edgelist file is then used to populate a Neo4j graph database instance, usi
 \rowcolors{1}{tablerowcolor}{tablebodycolor}
 %
 \captionabove[GitHub network descriptive statistics]{Here we see the most "central" Users per their PageRank rankings. This is based on the graph created by user-user follows edges.}
-\label{follow_pagerank_table}
+\label{dataset_stats}
 \begin{tabularx}{0.7\textwidth}{lXXX}
 \hline
 \rowcolor{tableheadcolor}
  & Count \\
 \hline
-Nodes (users) & 539893  \\
-Edges (:FOLLOWS relationships) & 919489 \\
-Mean degree & 3.4 \\
-Standard deviation of degree & 30.3 \\
+Num nodes &   1,751,605 \\
+Num edges & 10,740,463 \\
+Mean degree & 6.13 \\
+Num $USER$ nodes & 871,382  \\
+Num $REPO$ nodes &  880,223\\
+Num $:FOLLOWS$ edges & 1,120,069 \\
+Num $:STARS$ edges & 9,620,394 \\
+Mean $:FOLLOWS$ degree & 1.29 \\
+Mean $:STARS$ degree & 11.04 \\
 \hline
 \hline
 \end{tabularx}
 \end{table}
 
-
-\subsection{Data Analysis}
+As an initial sanity check for exploring the data we compute PageRank for the observed GitHub network. PageRank is a link analysis algorithm that assigns weights to nodes in a network based on that nodes relative importance, or centrality in the network. \cite{pagerank} It is similar to a measure of eigenvector centrality. PageRank has the weakness of only being applicable to a homogenous or single mode network, therefore we apply the algorithm to the User-User $follows$ subgraph and the User-Repository $stars$ subgraph separately. The GraphLab PageRank algorithm implementation is used \cite{GraphLab}.
 
 \begin{table}[ht]
 \centering
@@ -645,7 +651,7 @@ nf & 60.93 \\
 \rowcolors{1}{tablerowcolor}{tablebodycolor}
 %
 \captionabove[PageRank for User-Repository stars]{Top 20 central GitHub repositories by PageRank.}
-\label{follow_pagerank_table}
+\label{star_pagerank_table}
 %
 \begin{tabularx}{0.8\textwidth}{lXXX}
 \hline
@@ -675,3 +681,18 @@ Repository & PageRank \\
 \hline
 \end{tabularx}
 \end{table}
+
+Tables \ref{follow_pagerank_table} and \ref{star_pagerank_table} show the highest ranked Users and Repositories for the GitHub data collected. 
+
+Table \ref{follow_pagerank_table} shows the results of the PageRank algorithm using User-User $follows$ relationships only. As a sanity check of the data, we expect the highest ranked Users to be influential develops in the open-source software development community - the nodes with highest relative importance in this context. A cursory evaluation of the list of GitHub usernames confirms that this is indeed the case: 
+
+\begin{description}
+\item [mojombo] Tom Preston-Werner, a co-founder and developer of GitHub
+\item [torvalds] Linus Torvalds, maintainer of the linux operating system kernel
+\item [paulirish] Paul Irish, a well known Google developer
+\item [mbostock] Mike Bostock, core developer of d3.js a popular JavaScript data visualization library
+\item [mdo] Mark Otto, one of the developers of Bootstrap the widely used frontend CSS/Javascript framework
+\end{description}
+
+Similarly, Table \ref{stars_pagerank_table} enumerates the 20 most central GitHub software repositories, according to PageRank. Here we expect  
+
